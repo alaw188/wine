@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connoisseur Curation - 2005 Vintage Masterclass</title>
+    <!-- Premium Google Fonts for Classic Wine Aesthetic & Technical Readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS for utility structural layouts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f7f4eb; /* Warm premium light alabaster/champagne */
+            font-family: 'Montserrat', sans-serif;
+            color: #2d0c17; /* Deep grape/burgundy primary text */
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Slide Viewport Container for interactive presenting */
+        .presentation-wrapper {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Standard Widescreen Aspect Ratio Core Frame */
+        .slide-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f2 50%, #f4f0e4 100%);
+            color: #2d0c17;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e3dec3;
+            border-radius: 12px;
+            box-shadow: 0 20px 45px rgba(139, 115, 85, 0.12);
+            padding: 4% 5%;
+            display: none; /* Controlled via JS toggles */
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide-container.active {
+            display: flex;
+        }
+
+        /* ==========================================
+           VISUAL CONTINUITY & TYPOGRAPHY
+           ========================================== */
+        .slide-container .slide-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(20px, 2.8vw, 32px);
+            font-weight: 600;
+            color: #5c061d; /* Elegant deep burgundy */
+            margin: 0;
+            margin-bottom: 1.5%;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            width: 100%;
+            border-bottom: 2px solid rgba(140, 108, 45, 0.25); /* Muted gold line */
+            padding-bottom: 1%;
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            gap: 4%;
+            align-items: center;
+            width: 100%;
+            z-index: 2;
+            height: calc(100% - 70px);
+        }
+
+        /* Background Visual Decor Swirls */
+        .bg-wine-blob-left {
+            position: absolute;
+            top: -20%;
+            left: -15%;
+            width: 45vw;
+            height: 45vw;
+            background: radial-gradient(circle, rgba(139, 15, 46, 0.04) 0%, transparent 75%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .bg-wine-blob-right {
+            position: absolute;
+            bottom: -20%;
+            right: -15%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(140, 108, 45, 0.04) 0%, transparent 75%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ==========================================
+           LAYOUT PARTS & STYLING CARDS
+           ========================================== */
+        .somm-text-column {
+            flex: 0 0 65%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .somm-image-column {
+            flex: 0 0 31%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .bottle-showcase-box {
+            width: 100%;
+            height: 60%;
+            background: #ffffff;
+            border: 1px solid rgba(140, 108, 45, 0.25);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.03), 0 8px 20px rgba(139, 115, 85, 0.06);
+        }
+
+        .bottle-showcase-box img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .somm-story-block h3 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(12px, 1.4vw, 18px);
+            color: #8c6c2d; /* Antique deep gold */
+            margin: 0 0 4px 0;
+            letter-spacing: 1px;
+        }
+
+        .somm-story-block p {
+            font-size: clamp(10px, 1.1vw, 13.5px);
+            line-height: 1.45;
+            color: #4a3e3d; /* Soft dark charcoal */
+            margin: 0 0 10px 0;
+            font-weight: 400;
+        }
+
+        .somm-technical-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .tech-card {
+            background: rgba(139, 15, 46, 0.03); /* Extremely soft wine tint */
+            border-left: 3px solid #8c6c2d;
+            padding: 6px 12px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .tech-card h4 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(9px, 1vw, 11.5px);
+            color: #8c6c2d;
+            margin: 0 0 3px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .tech-card p {
+            font-size: clamp(9px, 1vw, 12px);
+            color: #2d0c17;
+            margin: 0;
+            line-height: 1.35;
+            font-weight: 400;
+        }
+
+        .sat-panel {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(139, 15, 46, 0.1);
+            border-radius: 6px;
+            padding: 8px 12px;
+        }
+
+        .sat-panel h4 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(9px, 1vw, 12px);
+            color: #5c061d;
+            margin: 0 0 6px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(139, 15, 46, 0.1);
+            padding-bottom: 4px;
+        }
+
+        .sat-metrics-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .sat-metric {
+            text-align: center;
+            font-size: clamp(8px, 0.9vw, 11px);
+            border-right: 1px solid rgba(139, 15, 46, 0.08);
+        }
+
+        .sat-metric:last-child {
+            border-right: none;
+        }
+
+        .sat-label {
+            color: #7a6e6b;
+            text-transform: uppercase;
+            font-size: clamp(7px, 0.8vw, 9px);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .sat-val {
+            color: #2d0c17;
+            font-weight: 600;
+        }
+
+        .sat-desc {
+            font-size: clamp(9px, 1vw, 11.5px);
+            color: #5c4b4a;
+            line-height: 1.35;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .blic-assessment-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(139, 15, 46, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 6px 15px rgba(139, 115, 85, 0.05);
+        }
+
+        .blic-assessment-card h4 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(9px, 1vw, 12px);
+            color: #8c6c2d;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .blic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            font-size: clamp(8px, 0.9vw, 10.5px);
+            margin-bottom: 6px;
+        }
+
+        .blic-item {
+            background: rgba(139, 15, 46, 0.02);
+            padding: 3px 5px;
+            border-radius: 4px;
+        }
+
+        .blic-item strong {
+            color: #5c061d;
+            display: block;
+            font-size: clamp(7px, 0.8vw, 9px);
+            text-transform: uppercase;
+        }
+
+        .blic-conclusion {
+            border-top: 1px dashed rgba(139, 15, 46, 0.12);
+            padding-top: 5px;
+            font-size: clamp(8px, 0.9vw, 11px);
+            color: #4a3e3d;
+            text-align: center;
+        }
+
+        .blic-conclusion span {
+            color: #8c6c2d;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .somm-tip-footer {
+            border-top: 1px solid rgba(139, 15, 46, 0.08);
+            padding-top: 8px;
+            margin-top: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .somm-tip-footer i {
+            color: #8c6c2d;
+            font-size: clamp(10px, 1.2vw, 14px);
+            margin-top: 2px;
+        }
+
+        .somm-tip-footer p {
+            font-size: clamp(9px, 1vw, 12px);
+            font-style: italic;
+            color: #6b5c58;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Title Layout */
+        .title-layout {
+            text-align: center;
+            margin: auto 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .title-layout h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(28px, 4.5vw, 56px);
+            font-weight: 700;
+            margin: 10px 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #2d0c17 30%, #8c6c2d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .event-meta {
+            color: #8c6c2d;
+            font-size: clamp(10px, 1.2vw, 14px);
+            letter-spacing: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .title-layout .subtitle {
+            color: #5c4b4a;
+            font-size: clamp(12px, 1.6vw, 18px);
+            font-weight: 400;
+            max-width: 90%;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .title-footer {
+            margin-top: 30px;
+            color: #8a7371;
+            font-size: clamp(8px, 1vw, 12px);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Recommendations List Grid */
+        .rec-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+        .rec-item {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(139, 15, 46, 0.08);
+            border-radius: 6px;
+            padding: 12px 18px;
+            position: relative;
+        }
+        .rec-item h4 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(11px, 1.2vw, 14px);
+            color: #8c6c2d;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .rec-item p {
+            font-size: clamp(9px, 1vw, 12.5px);
+            color: #4a3e3d;
+            margin: 0;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+        .rec-badge {
+            position: absolute;
+            right: 18px;
+            top: 12px;
+            background: #5c061d;
+            color: #fff;
+            font-size: clamp(7px, 0.8vw, 10px);
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Table Layout adjustments */
+        .table-layout {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 5px;
+        }
+        .table-layout table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-layout th {
+            background-color: #faf6eb;
+            color: #5c061d;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(8px, 1vw, 11.5px);
+            font-weight: 600;
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 2px solid #8c6c2d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .table-layout td {
+            padding: 6px 10px;
+            font-size: clamp(8px, 0.9vw, 11px);
+            color: #2d0c17;
+            border-bottom: 1px solid rgba(139, 15, 46, 0.08);
+            font-weight: 400;
+        }
+        .table-layout tr:hover {
+            background-color: rgba(139, 15, 46, 0.02);
+        }
+
+        /* Q&A Closing Layout */
+        .qa-layout {
+            text-align: center;
+            margin: auto 0;
+            width: 100%;
+        }
+        .qa-layout h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(36px, 6vw, 72px);
+            color: #5c061d;
+            margin: 10px 0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .qa-layout p {
+            font-size: clamp(14px, 2vw, 20px);
+            color: #8c6c2d;
+            max-width: 80%;
+            margin: 0 auto 25px auto;
+            font-weight: 400;
+        }
+        .qa-layout .contact-info {
+            font-size: clamp(10px, 1.2vw, 14px);
+            color: #6b5c58;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(139, 15, 46, 0.1);
+            display: inline-block;
+            padding-top: 15px;
+        }
+
+        /* ==========================================
+           PRINT / PDF EXPORT CONFIGS
+           ========================================== */
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .presentation-wrapper {
+                max-width: 100% !important;
+            }
+            .slide-container {
+                display: flex !important;
+                width: 100% !important;
+                height: 100vh !important;
+                aspect-ratio: auto !important;
+                page-break-after: always;
+                page-break-inside: avoid;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                background: linear-gradient(135deg, #ffffff 0%, #faf8f2 50%, #f4f0e4 100%) !important;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex flex-col justify-between">
+
+    <main class="presentation-wrapper flex-grow flex items-center justify-center">
+
+        <!-- SLIDE 1: TITLE SLIDE -->
+        <div class="slide-container active" id="slide1">
+            <div class="bg-wine-blob-left"></div>
+            <div class="bg-wine-blob-right"></div>
+            
+            <div class="title-layout">
+                <span class="event-meta">Comparative Tasting Masterclass</span>
+                <h1>The 2005 Vintage Masterclass</h1>
+                <p class="subtitle">An advanced structural and geological examination of Burgundy's premier terroirs and Piedmont's iconic Serravallian-driven Monforte d'Alba modernism.</p>
+                <div class="title-footer">Analytical Assessment • Clonal, Soil &amp; Enological Comparisons</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: INTRO SLIDE -->
+        <div class="slide-container" id="slide2">
+            <h2 class="slide-title">The Climatology of the 2005 Vintage</h2>
+            <div class="content-area">
+                <div class="somm-text-column" style="flex: 0 0 64%;">
+                    <div class="somm-story-block">
+                        <h3>Physiological Ripeness &amp; Structural Equilibrium</h3>
+                        <p>In mature continental analytical tasting, 2005 represents a modern-classic benchmark vintage across France and Northern Italy. Characterized by a remarkably dry, warm summer balanced by extreme diurnal shifts, the vine cycle produced small berries with exceptional skin-to-juice ratios and robust skin phenols without dehydrating acids.</p>
+                    </div>
+                    
+                    <div class="somm-technical-grid">
+                        <div class="tech-card">
+                            <h4>Climatic Profile</h4>
+                            <p>Moderate water stress restricted berry enlargement, yielding intense skin extracts, concentrated anthocyanins, and solid ripe tannins.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Burgundian Terroirs</h4>
+                            <p>Stellar sanitary conditions. Pinot Noir preserved vivid, high-driven tartaric acidity matching rich, complex dark-fruit structures.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Piedmont Nebbiolo</h4>
+                            <p>Extended ripening allowed Piedmont growers to harvest Nebbiolo late in the cycle, preserving intense floral-tar drive with massive ripe phenolics.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Evolution Curve</h4>
+                            <p>At 20+ years, the rustic tannin bounds have polymerized beautifully, showcasing complex underbrush, dry game, and iron-earth notes.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="somm-tip-footer">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <p>Sommelier Insight: Compare 2005 with 2003. Unlike the hot, low-acid 2003 vintage, 2005 retains stellar structural balance and electric freshness, ensuring a lengthy future cellaring run.</p>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column" style="flex: 0 0 36%;">
+                    <div class="bottle-showcase-box" style="height: 380px;">
+                        <img alt="Burgundy vineyard Cote de Nuits scenic sunset" src="https://cdn.shopify.com/s/files/1/0587/2002/6803/files/Burg_Vineyard_sunset_WEBP.webp" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Burgundy+Terroir'">
+                    </div>
+                    <div class="blic-assessment-card" style="margin-top: 15px;">
+                        <h4>Comparative Dimensions</h4>
+                        <div class="blic-conclusion">
+                            Main Profiles: <span>High Acidity • Rich Phenolic Grip • Evolving Tertiary Complexity</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: SERVICE & DRINKING PROTOCOL -->
+        <div class="slide-container" id="slide3">
+            <h2 class="slide-title">Tasting Protocol &amp; Analytical Flighting</h2>
+            <div class="content-area">
+                <div class="somm-text-column" style="flex: 0 0 65%;">
+                    <div class="rec-grid">
+                        <div class="rec-item">
+                            <span class="rec-badge">Flight Order</span>
+                            <h4>Structural Progression Logic</h4>
+                            <p>We begin with the high-toned aromatic complexity of Vosne-Romanée (Les Chaumes), transition to the clay-marl drive of NSG (Aux Boudots), and progress to the highly mineral, lithic profile of NSG (Aux Murgers). Flight 2 scales to the muscular Grand Cru Corton Clos du Roi, the robust rustic frame of Henri Gouges (Les Chaignots), and concludes with the massive, structured modern Barolo.</p>
+                        </div>
+                        <div class="rec-item">
+                            <span class="rec-badge">Decanting Guide</span>
+                            <h4>Oxygenation Metrics for 20-Year Library Vintages</h4>
+                            <p>The Burgundies require careful decanting (30–45 mins max) to separate fine mineral-bound sediment while preventing swift aromatic dissipation. The Piedmont Nebbiolo benefits from a longer decant of 90–120 mins to fully unlock its tight tannic core.</p>
+                        </div>
+                        <div class="rec-item">
+                            <span class="rec-badge">Service Variables</span>
+                            <h4>Temperature, Glassware, and Sediment Management</h4>
+                            <p>Maintain serving temperatures at 16–18°C (60–64°F) to control high alcohol volatiles in the Barolo. Use wide-rimmed, large Burgundy stems to capture volatile floral compounds and wood integration elements.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column" style="flex: 0 0 35%;">
+                    <div class="bottle-showcase-box" style="height: 320px;">
+                        <img alt="Elegant crystal wine decanter with glasses dark background" src="https://barhouse.in/cdn/shop/files/4_e2909ca5-c9e4-4919-b5ba-11dbaa6f8975.png?v=1776100436&amp;width=533" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Wine+Decanting'">
+                    </div>
+                    <div class="blic-assessment-card" style="margin-top: 15px;">
+                        <h4>Decanting Standard</h4>
+                        <p style="font-size:11px; margin:0; line-height:1.4; color:#4a3e3d;">Evaluate using classic analytical parameters: initial nose, glass aeration, mid-palate structural integration, and overall persistence.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: WINE 1 - AUX BOUDOTS -->
+        <div class="slide-container" id="slide4">
+            <h2 class="slide-title">Méo-Camuzet Aux Boudots NSG 1er Cru</h2>
+            <div class="content-area">
+                <div class="somm-text-column">
+                    <div class="somm-story-block">
+                        <h3>Terroir, Viticulture &amp; Structural Synthesis</h3>
+                        <p>Located on the extreme northern limit of Nuits-Saint-Georges, Aux Boudots shares an immediate boundary with Vosne-Romanée 1er Cru Aux Malconsorts. Visually, it features a shallow soil structure of Bajocian limestone marl and clay-loam. This specific position results in a structural compromise: the dense, structural power of Nuits-Saint-Georges coupled with the delicate, perfume-forward aromatic elegance of Vosne.</p>
+                    </div>
+                    
+                    <div class="somm-technical-grid">
+                        <div class="tech-card">
+                            <h4>Viticulture Details</h4>
+                            <p>Average vine age: 60+ years. High density planting (10,000 vines/ha) encouraging deep root extraction through limestone layers.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Enological Practices</h4>
+                            <p>Henri Jayer's school: 100% destemmed, cold soak pre-fermentation maceration for intense color and fruit extraction, matured in 50% new French oak barrels.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sat-panel">
+                        <h4>Structural Tasting Analysis</h4>
+                        <div class="sat-metrics-row">
+                            <div class="sat-metric"><div class="sat-label">Acid</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Tannin</div><div class="sat-val">Med (+)</div></div>
+                            <div class="sat-metric"><div class="sat-label">Alcohol</div><div class="sat-val">13.5%</div></div>
+                            <div class="sat-metric"><div class="sat-label">Body</div><div class="sat-val">Med (+)</div></div>
+                            <div class="sat-metric"><div class="sat-label">Finish</div><div class="sat-val">Long</div></div>
+                            <div class="sat-metric"><div class="sat-label">Dev</div><div class="sat-val">Mature</div></div>
+                        </div>
+                        <p class="sat-desc">Nose displays pronounced tertiary aromas of forest floor, sous-bois, dried game, and Five-Spice, layered over integrated French oak toast and baked black cherry.</p>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column">
+                    <div class="bottle-showcase-box">
+                        <img alt="MeoCamuzet Aux Boudots bottle" src="https://www.evino.eu/wp-content/uploads/2025/02/MEO-CAMUZET-NUITS-SAINT-GEORGES-1ER-CRU-AUX-BOUDOTS-2022-scaled.jpg" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Aux+Boudots'">
+                    </div>
+                    
+                    <div class="blic-assessment-card">
+                        <h4>Structural Evaluation</h4>
+                        <div class="blic-grid">
+                            <div class="blic-item"><strong>Balance</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Length</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Intensity</strong>Pronounced</div>
+                            <div class="blic-item"><strong>Complexity</strong>Highly Complex</div>
+                        </div>
+                        <div class="blic-conclusion">Quality Category: <span>Outstanding</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: WINE 2 - LES CHAUMES -->
+        <div class="slide-container" id="slide5">
+            <h2 class="slide-title">Méo-Camuzet Les Chaumes Vosne-Romanée 1er Cru</h2>
+            <div class="content-area">
+                <div class="somm-text-column">
+                    <div class="somm-story-block">
+                        <h3>Clay-Heavy Opulence and High-Toned Florals</h3>
+                        <p>Les Chaumes is situated on the lower slopes of the Vosne-Romanée amphitheater, directly beneath the iconic Grand Crus of La Tâche and Aux Malconsorts. Analytical soil analysis identifies a deeper limestone-clay matrix (Bathonian debris). The richer clay composition exhibits superior water retention, promoting higher vigor and producing a broader, more luxurious mid-palate weight with refined, softer tannins.</p>
+                    </div>
+                    
+                    <div class="somm-technical-grid">
+                        <div class="tech-card">
+                            <h4>Viticulture Details</h4>
+                            <p>Lower slope position, eastern aspect. Clay-heavy soils yielding an approachable, rich, and highly textured wine.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Enological Practices</h4>
+                            <p>Cold-maceration (Jayer style). 100% destemmed, fermentation with wild yeasts, aged in 100% new, tightly-grained French oak (Allier).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sat-panel">
+                        <h4>Structural Tasting Analysis</h4>
+                        <div class="sat-metrics-row">
+                            <div class="sat-metric"><div class="sat-label">Acid</div><div class="sat-val">Med (+)</div></div>
+                            <div class="sat-metric"><div class="sat-label">Tannin</div><div class="sat-val">Med (+)</div></div>
+                            <div class="sat-metric"><div class="sat-label">Alcohol</div><div class="sat-val">13.5%</div></div>
+                            <div class="sat-metric"><div class="sat-label">Body</div><div class="sat-val">Med (+)</div></div>
+                            <div class="sat-metric"><div class="sat-label">Finish</div><div class="sat-val">Long</div></div>
+                            <div class="sat-metric"><div class="sat-label">Dev</div><div class="sat-val">Mature</div></div>
+                        </div>
+                        <p class="sat-desc">High-toned aromatics showing dried violet petals, wild raspberry coulis, sandalwood, cedar, and sweet black tobacco. The wood is perfectly integrated.</p>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column">
+                    <div class="bottle-showcase-box">
+                        <img alt="MeoCamuzet Les Chaumes bottle" src="https://dynamiccellars.com/cdn/shop/files/meo-camuzet-vosne-romanee-1er-cru-les-chaumes-red-2022-3l-alt1.jpg?v=1777315972&amp;width=3840" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Les+Chaumes'">
+                    </div>
+                    
+                    <div class="blic-assessment-card">
+                        <h4>Structural Evaluation</h4>
+                        <div class="blic-grid">
+                            <div class="blic-item"><strong>Balance</strong>Exceptional</div>
+                            <div class="blic-item"><strong>Length</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Intensity</strong>Pronounced</div>
+                            <div class="blic-item"><strong>Complexity</strong>Highly Complex</div>
+                        </div>
+                        <div class="blic-conclusion">Quality Category: <span>Outstanding</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: WINE 3 - AUX MURGERS -->
+        <div class="slide-container" id="slide6">
+            <h2 class="slide-title">Méo-Camuzet Aux Murgers NSG 1er Cru</h2>
+            <div class="content-area">
+                <div class="somm-text-column">
+                    <div class="somm-story-block">
+                        <h3>Lithic Terroir and High-Drive Mineral Phenolics</h3>
+                        <p>Aux Murgers is situated in northern Nuits-Saint-Georges on a steep, well-drained slope characterized by extremely stony soils (derived from encrinital limestone, *calcaire à entroques*). The vineyard is interspersed with historical stone-heaps ('murgers'). The poor, shallow soils force deep root systems into fractures, delivering a wine with sharp mineral tension and powerful structural drive.</p>
+                    </div>
+                    
+                    <div class="somm-technical-grid">
+                        <div class="tech-card">
+                            <h4>Viticulture Details</h4>
+                            <p>Elevation 260m. Extremely poor gravelly soils over limestone bedrocks. Minimal vigor, maximizing grape skin phenolics.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Enological Practices</h4>
+                            <p>Traditional cold soak, destemmed, concrete vat fermentation with temperature control, aged in 65% new French oak.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sat-panel">
+                        <h4>Structural Tasting Analysis</h4>
+                        <div class="sat-metrics-row">
+                            <div class="sat-metric"><div class="sat-label">Acid</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Tannin</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Alcohol</div><div class="sat-val">13.5%</div></div>
+                            <div class="sat-metric"><div class="sat-label">Body</div><div class="sat-val">Med (+)</div></div>
+                            <div class="sat-metric"><div class="sat-label">Finish</div><div class="sat-val">Outstand.</div></div>
+                            <div class="sat-metric"><div class="sat-label">Dev</div><div class="sat-val">Mature</div></div>
+                        </div>
+                        <p class="sat-desc">The nose is dominated by savory notes: graphite, wet slate, and iron fillings, integrated with concentrated black cherry fruit, truffle oil, and damp soil.</p>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column">
+                    <div class="bottle-showcase-box">
+                        <img alt="MeoCamuzet Aux Murgers bottle" src="https://wine.sothebys.com/cdn/shop/files/NGMSMCT-generic.jpg?v=1770135479&amp;width=1445" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Aux+Murgers'">
+                    </div>
+                    
+                    <div class="blic-assessment-card">
+                        <h4>Structural Evaluation</h4>
+                        <div class="blic-grid">
+                            <div class="blic-item"><strong>Balance</strong>Superb</div>
+                            <div class="blic-item"><strong>Length</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Intensity</strong>Pronounced</div>
+                            <div class="blic-item"><strong>Complexity</strong>Highly Complex</div>
+                        </div>
+                        <div class="blic-conclusion">Quality Category: <span>Outstanding</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: WINE 4 - CORTON CLOS DU ROI -->
+        <div class="slide-container" id="slide7">
+            <h2 class="slide-title">de Montille Corton Grand Cru Clos du Roi</h2>
+            <div class="content-area">
+                <div class="somm-text-column">
+                    <div class="somm-story-block">
+                        <h3>Oxfordian Marl, Whole-Cluster verticality &amp; Grand Cru Power</h3>
+                        <p>Clos du Roi is situated in the optimal mid-slope band of the south-facing hill of Corton. Geologically, it is comprised of Oxfordian limestone mixed with iron-rich reddish marl. Domaine de Montille is celebrated for a minimalist, biodynamic approach. Their use of stem inclusion (whole cluster) acts as a stylistic signature, adding herbal structure and a vertical aromatic lift.</p>
+                    </div>
+                    
+                    <div class="somm-technical-grid">
+                        <div class="tech-card">
+                            <h4>Viticulture Details</h4>
+                            <p>Grand Cru status. Southern aspect maximizing sunlight exposure on the clay-marl slopes. Certified biodynamic.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Enological Practices</h4>
+                            <p>~50% whole-cluster fermentation. Minimalist extraction, indigenous yeasts, aged in older wood with low new oak (~25%).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sat-panel">
+                        <h4>Structural Tasting Analysis</h4>
+                        <div class="sat-metrics-row">
+                            <div class="sat-metric"><div class="sat-label">Acid</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Tannin</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Alcohol</div><div class="sat-val">13.8%</div></div>
+                            <div class="sat-metric"><div class="sat-label">Body</div><div class="sat-val">Full</div></div>
+                            <div class="sat-metric"><div class="sat-label">Finish</div><div class="sat-val">Outstand.</div></div>
+                            <div class="sat-metric"><div class="sat-label">Dev</div><div class="sat-val">Mature</div></div>
+                        </div>
+                        <p class="sat-desc">Complex botanical whole-cluster lift (forest pine, green peppercorn, white pepper), seamlessly layered with black truffle, leather, and dried blackcurrant.</p>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column">
+                    <div class="bottle-showcase-box">
+                        <img alt="Domaine de Montille Corton Clos du Roi bottle" src="https://sens.com.hk/cdn/shop/products/1290998x_225x.jpg?v=1622609427" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Clos+du+Roi'">
+                    </div>
+                    
+                    <div class="blic-assessment-card">
+                        <h4>Structural Evaluation</h4>
+                        <div class="blic-grid">
+                            <div class="blic-item"><strong>Balance</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Length</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Intensity</strong>Pronounced</div>
+                            <div class="blic-item"><strong>Complexity</strong>Highly Complex</div>
+                        </div>
+                        <div class="blic-conclusion">Quality Category: <span>Outstanding</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: WINE 5 - HENRI GOUGES LES CHAIGNOTS -->
+        <div class="slide-container" id="slide8">
+            <h2 class="slide-title">Henri Gouges Les Chaignots NSG 1er Cru</h2>
+            <div class="content-area">
+                <div class="somm-text-column">
+                    <div class="somm-story-block">
+                        <h3>Uncompromising Traditional Extraction &amp; White Oolite Scree</h3>
+                        <p>Domaine Henri Gouges is the historical guardian of old-school Nuits-Saint-Georges structure. Les Chaignots is located on the northern steep slopes of the village. The soils are a mix of limestone silt and clay interspersed with white oolite pebbles. Gouges' style is uncompromisingly traditional, demanding long cellaring to integrate its highly extracted, rustic tannins.</p>
+                    </div>
+                    
+                    <div class="somm-technical-grid">
+                        <div class="tech-card">
+                            <h4>Viticulture Details</h4>
+                            <p>Organic vineyard management. High stone content (white pebbles) facilitating heat retention and high natural drainage.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Enological Practices</h4>
+                            <p>Fully destemmed. Fermented with indigenous yeasts, moderate extraction, aged in older oak barrels (only ~15% new wood).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sat-panel">
+                        <h4>Structural Tasting Analysis</h4>
+                        <div class="sat-metrics-row">
+                            <div class="sat-metric"><div class="sat-label">Acid</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Tannin</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Alcohol</div><div class="sat-val">13.2%</div></div>
+                            <div class="sat-metric"><div class="sat-label">Body</div><div class="sat-val">Medium</div></div>
+                            <div class="sat-metric"><div class="sat-label">Finish</div><div class="sat-val">Long</div></div>
+                            <div class="sat-metric"><div class="sat-label">Dev</div><div class="sat-val">Mature</div></div>
+                        </div>
+                        <p class="sat-desc">Deeply earth-driven and rustic. Shows tart red fruits (cranberry, sour cherry) alongside wild game, wet tobacco leaf, and mineral-iron complexities.</p>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column">
+                    <div class="bottle-showcase-box">
+                        <img alt="Henri Gouges Les Chaignots bottle" src="https://www.gouges.com/wp-content/uploads/2020/11/Les_chaignots.png" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Les+Chaignots'">
+                    </div>
+                    
+                    <div class="blic-assessment-card">
+                        <h4>Structural Evaluation</h4>
+                        <div class="blic-grid">
+                            <div class="blic-item"><strong>Balance</strong>Very Good</div>
+                            <div class="blic-item"><strong>Length</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Intensity</strong>Pronounced</div>
+                            <div class="blic-item"><strong>Complexity</strong>Highly Complex</div>
+                        </div>
+                        <div class="blic-conclusion">Quality Category: <span>Very Good to Outstanding</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: WINE 6 - DOMENICO CLERICO BAROLO -->
+        <div class="slide-container" id="slide9">
+            <h2 class="slide-title">Domenico Clerico Ciabot Mentin Barolo DOCG</h2>
+            <div class="content-area">
+                <div class="somm-text-column">
+                    <div class="somm-story-block">
+                        <h3>Monforte d'Alba Modernism &amp; Serravallian Soil Compactness</h3>
+                        <p>Domenico Clerico was a pioneer of the modernist movement in Piedmont. Sourced from the prestigious Ginestra cru in Monforte d'Alba, the soils belong to the Serravallian (Helvetian) geological era. They consist of highly compact clay-marls and sandstone silt. These poor, dense soils impart immense phenolic extract, which Clerico managed with modernist roto-fermentation and French oak barriques.</p>
+                    </div>
+                    
+                    <div class="somm-technical-grid">
+                        <div class="tech-card">
+                            <h4>Viticulture Details</h4>
+                            <p>Nebbiolo (100%). Southern exposure at 350-400m. High clay-marl content maximizing concentration and structural tannins.</p>
+                        </div>
+                        <div class="tech-card">
+                            <h4>Enological Practices</h4>
+                            <p>Modernist approach: short maceration in temperature-controlled rotary fermenters, aged in French oak barriques (40% new).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sat-panel">
+                        <h4>Structural Tasting Analysis</h4>
+                        <div class="sat-metrics-row">
+                            <div class="sat-metric"><div class="sat-label">Acid</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Tannin</div><div class="sat-val">High</div></div>
+                            <div class="sat-metric"><div class="sat-label">Alcohol</div><div class="sat-val">14.5%</div></div>
+                            <div class="sat-metric"><div class="sat-label">Body</div><div class="sat-val">Full</div></div>
+                            <div class="sat-metric"><div class="sat-label">Finish</div><div class="sat-val">Outstand.</div></div>
+                            <div class="sat-metric"><div class="sat-label">Dev</div><div class="sat-val">Mature</div></div>
+                        </div>
+                        <p class="sat-desc">Pronounced aromatics: dark cocoa, tar, dried rose petals, menthol, and black licorice, integrated with well-aged, spicy barrique toast notes.</p>
+                    </div>
+                </div>
+                
+                <div class="somm-image-column">
+                    <div class="bottle-showcase-box">
+                        <img alt="Domenico Clerico Barolo Ciabot Mentin bottle" src="http://shop.lamontscott.com.au/cdn/shop/files/2008_Domenico_Clerico_Barolo_Ciabot_Mentin.jpg?v=1757511507" onerror="this.src='https://placehold.co/400x300/f4f0e4/5c061d?text=Ciabot+Mentin'">
+                    </div>
+                    
+                    <div class="blic-assessment-card">
+                        <h4>Structural Evaluation</h4>
+                        <div class="blic-grid">
+                            <div class="blic-item"><strong>Balance</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Length</strong>Outstanding</div>
+                            <div class="blic-item"><strong>Intensity</strong>Pronounced</div>
+                            <div class="blic-item"><strong>Complexity</strong>Highly Complex</div>
+                        </div>
+                        <div class="blic-conclusion">Quality Category: <span>Outstanding</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: TECHNICAL MATRIX -->
+        <div class="slide-container" id="slide10">
+            <h2 class="slide-title">2005 Vintage Comparative Terroir Matrix</h2>
+            <div class="content-area" style="display: block;">
+                <div class="table-layout">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Wine Selection</th>
+                                <th>Classification</th>
+                                <th>Soil / Geological Profile</th>
+                                <th>Stem Protocol</th>
+                                <th>Maturation / Vessel</th>
+                                <th>Tannin / Acid Profile</th>
+                                <th>Quality Assessment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Méo-Camuzet Aux Boudots</td>
+                                <td>Premier Cru</td>
+                                <td>Bajocian Limestone &amp; Clay-loam</td>
+                                <td>100% Destemmed</td>
+                                <td>50% New French Oak</td>
+                                <td>Med(+) Chalky / High</td>
+                                <td>Outstanding</td>
+                            </tr>
+                            <tr>
+                                <td>Méo-Camuzet Les Chaumes</td>
+                                <td>Premier Cru</td>
+                                <td>Deep Bathonian Clay-limestone</td>
+                                <td>100% Destemmed</td>
+                                <td>100% New French Oak</td>
+                                <td>Med(+) Velvety / Med(+)</td>
+                                <td>Outstanding</td>
+                            </tr>
+                            <tr>
+                                <td>Méo-Camuzet Aux Murgers</td>
+                                <td>Premier Cru</td>
+                                <td>Lithic Encrinital Scree</td>
+                                <td>100% Destemmed</td>
+                                <td>65% New French Oak</td>
+                                <td>High Fine-Grained / High</td>
+                                <td>Outstanding</td>
+                            </tr>
+                            <tr>
+                                <td>de Montille Corton Clos du Roi</td>
+                                <td>Grand Cru</td>
+                                <td>Oxfordian Marl &amp; Iron Limestone</td>
+                                <td>50% Whole-Cluster</td>
+                                <td>25% New French Oak</td>
+                                <td>High Chalky-Dense / High</td>
+                                <td>Outstanding</td>
+                            </tr>
+                            <tr>
+                                <td>Henri Gouges Les Chaignots</td>
+                                <td>Premier Cru</td>
+                                <td>Limestone Clay, White Oolite Scree</td>
+                                <td>100% Destemmed</td>
+                                <td>15% New French Oak</td>
+                                <td>High Grippy-Rustic / High</td>
+                                <td>Very Good (+)</td>
+                            </tr>
+                            <tr>
+                                <td>Domenico Clerico Ciabot Mentin</td>
+                                <td>Barolo DOCG</td>
+                                <td>Serravallian (Helvetian) Marl</td>
+                                <td>100% Destemmed</td>
+                                <td>French Oak Barrique (40% New)</td>
+                                <td>High Polished-Ripe / High</td>
+                                <td>Outstanding</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="somm-tip-footer" style="margin-top: 20px;">
+                    <i class="fa-solid fa-wine-glass"></i>
+                    <p><strong>Comparative Synthesis:</strong> Contrast the high tartaric acidity and bright red/black fruit typicity of Burgundy Pinot Noir with Nebbiolo's signature pale garnet color, high levels of alcohol, massive tannins, tar, and dried rose aromatics.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: CLOSING SLIDE -->
+        <div class="slide-container" id="slide11">
+            <div class="bg-wine-blob-left"></div>
+            <div class="bg-wine-blob-right"></div>
+            
+            <div class="qa-layout">
+                <span class="event-meta">The Connoisseur Curation Finale</span>
+                <h2>Cheers!</h2>
+                <p>Thank you for embarking on this systematic, geological, and structural tasting exploration of the historic 2005 vintage with me.</p>
+                <div class="contact-info">
+                    Enjoy the remaining pours • Let the discussion flow
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Interactive Control Board at Footer -->
+    <footer class="no-print max-w-7xl mx-auto w-full mt-6 flex justify-between items-center bg-white/70 p-3 rounded-lg border border-stone-300/60 shadow-md">
+        <button onclick="prevSlide()" class="bg-stone-100 hover:bg-stone-200 text-stone-800 px-4 py-2 rounded-lg text-sm font-semibold transition border border-stone-300/40">
+            <i class="fa-solid fa-arrow-left"></i> Previous
+        </button>
+        <span class="text-stone-600 text-sm font-semibold">
+            Slide <span id="current-slide-num" class="text-amber-800 font-bold">1</span> of 11
+        </span>
+        <button onclick="nextSlide()" class="bg-stone-100 hover:bg-stone-200 text-stone-800 px-4 py-2 rounded-lg text-sm font-semibold transition border border-stone-300/40">
+            Next <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </footer>
+
+    <script>
+        // Interactive Navigation Logic
+        let currentSlide = 1;
+        const totalSlides = 11;
+
+        function updateSlideDisplay() {
+            // Hide all slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const s = document.getElementById('slide' + i);
+                if (s) s.classList.remove('active');
+            }
+            // Show active slide
+            const activeSlide = document.getElementById('slide' + currentSlide);
+            if (activeSlide) activeSlide.classList.add('active');
+            
+            // Update counter
+            document.getElementById('current-slide-num').innerText = currentSlide;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlideDisplay();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlideDisplay();
+            }
+        }
+
+        // Add keyboard support (Left / Right Arrow)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+    </script>
+</body>
+</html>
+```
+eof
+
+* Let me know if you would like any specific font, typography shifts, or layout updates as you review the champagne-toned preview on your screen!
