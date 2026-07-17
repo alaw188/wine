@@ -39,23 +39,40 @@
             color: var(--text-charcoal);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
+            padding: 12px;
         }
 
-        /* Fixed Presentation-First Dimensions (16:9 Widescreen Landscape) */
+        @media (min-width: 1024px) {
+            body {
+                padding: 32px;
+            }
+        }
+
+        /* Responsive Presentation Viewport Container */
         .slide-container {
-            width: 1280px;
-            height: 720px;
+            width: 100%;
+            max-width: 1280px;
             background-color: var(--bg-champagne);
             color: var(--text-charcoal);
             position: relative;
             overflow: hidden;
-            padding: 40px 60px;
+            padding: 24px 20px 80px 20px; /* Extra bottom padding for mobile navigation */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             border-radius: 8px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
             transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            min-height: calc(100vh - 24px);
+        }
+
+        /* Lock to 16:9 cinematic display only on widescreen desktops */
+        @media (min-width: 1024px) {
+            .slide-container {
+                height: 720px;
+                min-height: 720px;
+                padding: 40px 60px;
+            }
         }
 
         /* Ambient subtle vignetting overlay */
@@ -75,12 +92,20 @@
             content: '';
             position: absolute;
             bottom: 25px;
-            left: 60px;
-            right: 60px;
+            left: 20px;
+            right: 20px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.25) 20%, rgba(197, 160, 89, 0.25) 80%, transparent);
+            background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.15) 20%, rgba(197, 160, 89, 0.15) 80%, transparent);
             z-index: 0;
             pointer-events: none;
+        }
+
+        @media (min-width: 1024px) {
+            .slide-container::after {
+                left: 60px;
+                right: 60px;
+                background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.25) 20%, rgba(197, 160, 89, 0.25) 80%, transparent);
+            }
         }
 
         .slide-container > * {
@@ -96,66 +121,113 @@
             line-height: 1.1;
         }
 
-        /* Widescreen Title style rules */
+        /* Responsive Title Style */
         .slide-title {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 700;
             margin-bottom: 12px;
             color: var(--accent-burgundy);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             border-bottom: 1px solid var(--border-gold);
             padding-bottom: 8px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 4px;
+            align-items: flex-start;
             text-transform: uppercase;
             width: 100%;
         }
 
+        @media (min-width: 768px) {
+            .slide-title {
+                font-size: 24px;
+                letter-spacing: 2px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
         .slide-title span {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 11px;
+            font-size: 9px;
             color: var(--accent-gold);
             font-weight: 700;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .slide-title span {
+                font-size: 11px;
+                letter-spacing: 3px;
+            }
         }
 
         p, li {
-            font-size: 12.5px;
+            font-size: 12px;
             line-height: 1.45;
             color: rgba(30, 37, 43, 0.9);
             font-weight: 400;
         }
 
-        /* Masterclass split view design: 63% text and 37% tech card layout */
+        @media (min-width: 1024px) {
+            p, li {
+                font-size: 12.5px;
+            }
+        }
+
+        /* Fluid adaptive Split Layout */
         .somm-split {
             display: flex;
-            gap: 30px;
+            flex-direction: column;
+            gap: 20px;
             width: 100%;
-            height: 310px; /* Highly optimized height parameter to prevent vertical overlap */
-            align-items: stretch;
+            height: auto;
             margin-bottom: 15px;
         }
 
+        @media (min-width: 1024px) {
+            .somm-split {
+                flex-direction: row;
+                gap: 30px;
+                height: 310px; /* Rigid height container only on desktop scale to align content */
+            }
+        }
+
         .somm-split-left {
-            width: 63%;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            gap: 12px;
+        }
+
+        @media (min-width: 1024px) {
+            .somm-split-left {
+                width: 63%;
+                gap: 0;
+            }
         }
 
         .somm-split-right {
-            width: 37%;
+            width: 100%;
             background-color: var(--bg-card);
             border: 1px solid var(--accent-gold);
             border-radius: 6px;
-            padding: 15px 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-shadow: inset 0 0 25px rgba(197, 160, 89, 0.08), 0 8px 20px rgba(0,0,0,0.03);
             position: relative;
             overflow: hidden;
+        }
+
+        @media (min-width: 1024px) {
+            .somm-split-right {
+                width: 37%;
+                padding: 15px 20px;
+            }
         }
 
         .somm-split-right::after {
@@ -174,6 +246,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            gap: 10px;
         }
 
         /* Sommelier Technical Ledger Layout */
@@ -253,9 +326,15 @@
         .custom-bullets li {
             position: relative;
             padding-left: 20px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-size: 11.5px;
             line-height: 1.4;
+        }
+
+        @media (min-width: 1024px) {
+            .custom-bullets li {
+                margin-bottom: 6px;
+            }
         }
 
         .custom-bullets li::before {
@@ -275,7 +354,13 @@
         .wine-enrichment-block {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 12px;
+        }
+
+        @media (min-width: 1024px) {
+            .wine-enrichment-block {
+                gap: 6px;
+            }
         }
 
         .enriched-subtitle {
@@ -285,7 +370,7 @@
             color: var(--accent-burgundy);
             border-bottom: 1px dashed rgba(110, 26, 36, 0.25);
             padding-bottom: 1px;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
@@ -296,7 +381,7 @@
             gap: 12px;
             background-color: #FFFDFB;
             border: 1px solid rgba(197, 160, 89, 0.25);
-            padding: 6px 12px;
+            padding: 8px 12px;
             border-radius: 4px;
             margin-top: 4px;
         }
@@ -313,25 +398,35 @@
             line-height: 1.35;
         }
 
-        /* Structural dashboard styling based strictly on image_47ca2a.png */
+        /* Structural dashboard styling based strictly on image_47ca2a.png (Now fully responsive) */
         .structural-dashboard {
             display: grid;
-            grid-template-columns: 63% 35%;
-            gap: 2%;
+            grid-template-columns: 1fr;
+            gap: 16px;
             width: 100%;
-            height: 140px; /* Fits exactly inside layout frame margins */
-            align-items: stretch;
+            height: auto;
+            margin-top: 15px;
+        }
+
+        @media (min-width: 1024px) {
+            .structural-dashboard {
+                grid-template-columns: 63% 35%;
+                gap: 2%;
+                height: 140px; /* Exact desktop fit */
+                margin-top: 0;
+            }
         }
 
         /* Left side of dashboard: Structural Tasting Analysis */
         .structural-tasting-box {
             border: 1px solid #EAE0CE;
-            padding: 10px 16px;
+            padding: 12px 16px;
             border-radius: 6px;
             background: #FFFDFB;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            gap: 8px;
             box-shadow: 0 4px 12px rgba(110, 26, 36, 0.015);
         }
 
@@ -341,18 +436,22 @@
             font-weight: 700;
             color: var(--accent-burgundy);
             letter-spacing: 1.5px;
-            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
         .structural-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             border-bottom: 1px solid #F2ECE0;
             padding-bottom: 6px;
-            margin-bottom: 6px;
             text-align: center;
+        }
+
+        @media (min-width: 640px) {
+            .structural-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
         }
 
         .struct-metric {
@@ -362,8 +461,17 @@
             border-right: 1px solid #F2ECE0;
         }
 
-        .struct-metric:last-child {
+        .struct-metric:nth-child(3n) {
             border-right: none;
+        }
+
+        @media (min-width: 640px) {
+            .struct-metric:nth-child(3n) {
+                border-right: 1px solid #F2ECE0;
+            }
+            .struct-metric:last-child {
+                border-right: none;
+            }
         }
 
         .struct-label {
@@ -393,12 +501,13 @@
         /* Right side of dashboard: Structural Evaluation */
         .structural-eval-box {
             border: 1px solid rgba(197, 160, 89, 0.3);
-            padding: 10px 16px;
+            padding: 12px 16px;
             border-radius: 6px;
             background: #FFFDFB;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            gap: 6px;
             box-shadow: 0 4px 12px rgba(197, 160, 89, 0.03);
         }
 
@@ -408,15 +517,21 @@
             font-weight: 700;
             color: var(--accent-gold);
             letter-spacing: 1.5px;
-            margin-bottom: 6px;
             text-align: center;
             text-transform: uppercase;
         }
 
         .eval-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4px 10px;
+            grid-template-columns: 1fr;
+            gap: 4px;
+        }
+
+        @media (min-width: 480px) {
+            .eval-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px 10px;
+            }
         }
 
         .eval-row {
@@ -466,8 +581,15 @@
 
         .map-communes-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        @media (min-width: 480px) {
+            .map-communes-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
         }
 
         .map-commune-card {
@@ -496,26 +618,38 @@
         /* Persistent Navigation Dock CSS */
         .nav-dock {
             position: fixed;
-            bottom: 25px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(17, 19, 21, 0.95);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(197, 160, 89, 0.35);
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 50px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             z-index: 1000;
+            width: calc(100% - 32px);
+            max-width: 400px;
+            justify-content: space-between;
+        }
+
+        @media (min-width: 640px) {
+            .nav-dock {
+                bottom: 25px;
+                padding: 10px 20px;
+                gap: 15px;
+                width: auto;
+            }
         }
 
         .nav-btn {
             background: transparent;
             border: none;
             color: #E2E8F0;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.2s ease;
             width: 32px;
@@ -533,8 +667,8 @@
 
         .slide-indicator {
             color: var(--accent-gold);
-            font-size: 12px;
-            letter-spacing: 2px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
             font-weight: 700;
             text-transform: uppercase;
         }
@@ -589,24 +723,39 @@
         .matrix-table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 600px;
         }
 
         .matrix-table th {
             background-color: var(--accent-burgundy);
             color: #FFF;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 600;
-            padding: 8px 12px;
+            padding: 8px;
             text-align: left;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        @media (min-width: 768px) {
+            .matrix-table th {
+                font-size: 13.5px;
+                padding: 8px 12px;
+            }
+        }
+
         .matrix-table td {
-            padding: 6px 12px;
-            font-size: 11px;
+            padding: 6px 8px;
+            font-size: 10px;
             border: 1px solid var(--border-gold);
             color: var(--text-charcoal);
+        }
+
+        @media (min-width: 768px) {
+            .matrix-table td {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
         }
 
         .matrix-table tr:nth-child(even) {
@@ -623,15 +772,21 @@
             bottom: -300px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
+            width: 95%;
             max-width: 1200px;
             background: rgba(17, 19, 21, 0.98);
             border: 1px solid var(--accent-gold);
             border-radius: 12px 12px 0 0;
-            padding: 20px;
+            padding: 15px;
             transition: bottom 0.3s ease-in-out;
             z-index: 999;
             box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 768px) {
+            .drawer {
+                padding: 20px;
+            }
         }
 
         .drawer.open {
@@ -641,23 +796,46 @@
         .drawer-toggle {
             position: absolute;
             top: -24px;
-            right: 40px;
+            right: 20px;
             background: var(--accent-burgundy);
             border: 1px solid var(--accent-gold);
             border-bottom: none;
             color: #FFF;
-            padding: 4px 14px;
+            padding: 4px 12px;
             border-radius: 6px 6px 0 0;
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
         }
 
+        @media (min-width: 768px) {
+            .drawer-toggle {
+                right: 40px;
+                padding: 4px 14px;
+                font-size: 10px;
+            }
+        }
+
         .drawer-grid {
             display: grid;
-            grid-template-columns: repeat(13, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        @media (min-width: 480px) {
+            .drawer-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .drawer-grid {
+                grid-template-columns: repeat(13, 1fr);
+                gap: 8px;
+            }
         }
 
         .drawer-item {
@@ -665,11 +843,17 @@
             border: 1px solid rgba(197, 160, 89, 0.2);
             color: #FFF;
             border-radius: 4px;
-            padding: 8px 4px;
+            padding: 6px 2px;
             text-align: center;
             font-size: 9px;
             cursor: pointer;
             transition: all 0.2s ease;
+        }
+
+        @media (min-width: 768px) {
+            .drawer-item {
+                padding: 8px 4px;
+            }
         }
 
         .drawer-item:hover, .drawer-item.active {
@@ -678,25 +862,25 @@
         }
     </style>
 </head>
-<body class="p-8">
+<body class="p-3 md:p-8">
 
     <!-- SLIDE 1: TITLE / INTRO -->
     <div class="slide-container slide-show" id="slide1">
-        <div class="flex flex-col justify-between h-full py-16 text-center">
-            <div class="text-[#C5A059] text-3xl mb-4">
+        <div class="flex flex-col justify-between h-full py-8 md:py-16 text-center">
+            <div class="text-[#C5A059] text-2xl md:text-3xl mb-2 md:mb-4">
                 <i class="fa-solid fa-wine-glass-empty animate-pulse"></i>
             </div>
             <div>
-                <h1 class="text-5xl md:text-6xl text-[#6E1A24] font-serif tracking-tight leading-tight mb-2">A Study of the 2005 Vintage</h1>
-                <h3 class="text-xl tracking-widest text-[#C5A059] font-sans uppercase font-medium">Advanced Masterclass: Burgundy & Barolo</h3>
-                <div class="w-24 h-[1px] bg-[#C5A059] mx-auto my-6"></div>
+                <h1 class="text-3xl sm:text-4xl md:text-6xl text-[#6E1A24] font-serif tracking-tight leading-tight mb-2">A Study of the 2005 Vintage</h1>
+                <h3 class="text-sm sm:text-md md:text-xl tracking-widest text-[#C5A059] font-sans uppercase font-medium">Advanced Masterclass: Burgundy & Barolo</h3>
+                <div class="w-16 md:w-24 h-[1px] bg-[#C5A059] mx-auto my-4 md:my-6"></div>
             </div>
-            <div class="max-w-2xl mx-auto">
-                <p class="text-[#1E252B] opacity-80 italic leading-relaxed text-sm">
+            <div class="max-w-2xl mx-auto px-4">
+                <p class="text-[#1E252B] opacity-80 italic leading-relaxed text-xs md:text-sm">
                     A technical, high-resolution exploration charting geological foundations, climatic stress metrics, structural longevity parameters, and detailed vertical assessments of a highly concentrated and legendary vintage.
                 </p>
             </div>
-            <div class="text-xs uppercase tracking-widest opacity-60 font-semibold mt-4">
+            <div class="text-[9px] md:text-xs uppercase tracking-widest opacity-60 font-semibold mt-4">
                 Private Sommelier Guild &amp; Vintage Collectors
             </div>
         </div>
@@ -706,9 +890,9 @@
     <div class="slide-container slide-hide" id="slide2">
         <h2 class="slide-title">Burgundy Terroir &amp; 2005 Climatic Marvel <span>Chapter I</span></h2>
         <div class="content-area flex-grow">
-            <div class="somm-split h-[470px]">
+            <div class="somm-split">
                 <!-- Left Narrative Content -->
-                <div class="somm-split-left py-2">
+                <div class="somm-split-left py-1 lg:py-2">
                     <ul class="custom-bullets">
                         <li><strong>The Dry-Weather Yield Concentration:</strong> The 2005 growing season was marked by an exceptional moisture deficit (nearly 40% below historical averages). The vegetative cycle adjusted beautifully, yielding unusually thick-skinned berries with phenomenal concentrations of dry extract.</li>
                         <li><strong>The Lithological Bedrock Engine:</strong> Burgundy's core terroir engine lies in the complex Bajocian and Bathonian limestone scree. These porous fragments overlay deep, highly active calcium carbonate layers of Bathonian/Oxfordian marl, forcing vine roots to search downward, producing intense structural complexity.</li>
@@ -754,8 +938,8 @@
     <div class="slide-container slide-hide" id="slide3">
         <h2 class="slide-title">Burgundy Relative Location Map <span>Chapter II</span></h2>
         <div class="content-area flex-grow">
-            <div class="somm-split h-[470px]">
-                <div class="somm-split-left py-2">
+            <div class="somm-split">
+                <div class="somm-split-left py-1 lg:py-2">
                     <ul class="custom-bullets">
                         <li><strong>Artificial Boundaries vs. Soil Continuity:</strong> The administrative border dividing Nuits-Saint-Georges and Vosne-Romanée is virtually artificial. The geological slopes form one single, continuous colluvial fan along the mid-slope.</li>
                         <li><strong>The Boudots - Malconsorts Continuum:</strong> NSG 1er Cru "Aux Boudots" sits directly contiguous to Vosne-Romanée 1er Cru "Aux Malconsorts." They share identical elevation profiles (250m - 280m) and Bathonian limestone scree.</li>
@@ -811,8 +995,8 @@
     <div class="slide-container slide-hide" id="slide4">
         <h2 class="slide-title">Barolo (Monforte d'Alba) Geology &amp; Map <span>Chapter III</span></h2>
         <div class="content-area flex-grow">
-            <div class="somm-split h-[470px]">
-                <div class="somm-split-left py-2">
+            <div class="somm-split">
+                <div class="somm-split-left py-1 lg:py-2">
                     <ul class="custom-bullets">
                         <li><strong>The Muscular Architecture of Monforte:</strong> Monforte d'Alba is legendary for creating the most structured and slow-evolving Nebbiolos in the Barolo DOCG. The massive structure is defined by its deep, compact sandstone marls.</li>
                         <li><strong>The Helvetian Serravallian Soil Epoch:</strong> The landscape is defined by the *Marne di Sant'Agata Fossili* (bluish-grey clay, sand, and limestone silt) mixed with high-density *Diano Sandstones*, packing the wines with iron, manganese, and severe structural phenolics.</li>
@@ -858,9 +1042,9 @@
     <div class="slide-container slide-hide" id="slide5">
         <h2 class="slide-title">Drinking &amp; Service Protocol <span>Chapter IV</span></h2>
         <div class="content-area flex-grow">
-            <div class="somm-split h-[470px]">
-                <div class="somm-split-left py-2">
-                    <div class="grid grid-cols-2 gap-4">
+            <div class="somm-split">
+                <div class="somm-split-left py-1 lg:py-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="bg-white border border-[#EAE0CE] rounded p-3">
                             <h4 class="font-serif text-[#6E1A24] text-[13.5px] font-bold mb-1"><i class="fa-solid fa-wine-glass-empty mr-2"></i>Stemware Standards</h4>
                             <p class="text-[11px] leading-normal"><strong>Burgundy Flights:</strong> Wide, bulbous Pinot Noir bowls to volatilize delicate tertiary aromatics and steer high acidity toward the back-palate. <br><strong>Barolo Cru:</strong> Tall, tapered glasses to soften high alcohol margins and focus sweet wood spice.</p>
@@ -869,7 +1053,7 @@
                             <h4 class="font-serif text-[#6E1A24] text-[13.5px] font-bold mb-1"><i class="fa-solid fa-thermometer mr-2"></i>Temperature Calibration</h4>
                             <p class="text-[11px] leading-normal">Maintain Burgundy flights strictly at 16°C. High heat emphasizes the vintage's naturally warm alcohol weight, while serving too cold hardens the dense tannic structure. Serve Barolo at 17-18°C.</p>
                         </div>
-                        <div class="bg-white border border-[#EAE0CE] rounded p-3 col-span-2">
+                        <div class="bg-white border border-[#EAE0CE] rounded p-3 sm:col-span-2">
                             <h4 class="font-serif text-[#6E1A24] text-[13.5px] font-bold mb-1"><i class="fa-solid fa-flask mr-2"></i>Decanting: Slow-Ox vs. Active Aeration</h4>
                             <p class="text-[11.5px] leading-normal"><strong>The Pinot Noir Flight:</strong> Decanting is not recommended. Aggressive movement can cause fragile, complex 20-year-old ester groups to separate. Opt for "Slow-Ox" (uncorking bottle 2 hours prior to service) to gently let the wine breathe inside the bottle. <br><strong>The Modern Barolo:</strong> Double decant 1.5 hours prior to service to blow off volatile compounds and allow sweet wood oak notes to merge with Nebbiolo's classic leather and tea elements.</p>
                         </div>
@@ -1324,7 +1508,7 @@
     <div class="slide-container slide-hide" id="slide12">
         <h2 class="slide-title">2005 Masterclass Tasting Summary Matrix <span>Tasting Review</span></h2>
         <div class="content-area flex-grow flex flex-col justify-between py-2">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto border border-[#C5A059] rounded">
                 <table class="matrix-table">
                     <thead>
                         <tr>
@@ -1404,21 +1588,21 @@
 
     <!-- SLIDE 13: CLOSING / CHEERS -->
     <div class="slide-container slide-hide" id="slide13">
-        <div class="flex flex-col justify-between h-full py-16 text-center">
-            <div class="text-[#6E1A24] text-5xl mb-4">
+        <div class="flex flex-col justify-between h-full py-8 md:py-16 text-center">
+            <div class="text-[#6E1A24] text-4xl md:text-5xl mb-4">
                 <i class="fa-solid fa-wine-glass"></i>
             </div>
             <div>
-                <h1 class="text-6xl text-[#6E1A24] font-serif tracking-tight leading-tight mb-4">Santé &amp; Salute</h1>
-                <h3 class="text-lg tracking-widest text-[#C5A059] font-sans uppercase font-medium">To Great Terroir, Deep cellars, and Lifelong Companions</h3>
-                <div class="w-24 h-[1px] bg-[#C5A059] mx-auto my-6"></div>
+                <h1 class="text-4xl md:text-6xl text-[#6E1A24] font-serif tracking-tight leading-tight mb-4">Santé &amp; Salute</h1>
+                <h3 class="text-md md:text-lg tracking-widest text-[#C5A059] font-sans uppercase font-medium">To Great Terroir, Deep cellars, and Lifelong Companions</h3>
+                <div class="w-16 md:w-24 h-[1px] bg-[#C5A059] mx-auto my-4 md:my-6"></div>
             </div>
-            <div class="max-w-xl mx-auto">
-                <p class="text-[#1E252B] opacity-80 italic leading-relaxed text-sm">
+            <div class="max-w-xl mx-auto px-4">
+                <p class="text-[#1E252B] opacity-80 italic leading-relaxed text-xs md:text-sm">
                     "Wine is the only artwork that you can actually drink." Let us treasure this rare vertical comparison of two legendary, structural wine-growing regions under a spectacular solar year.
                 </p>
             </div>
-            <div class="text-xs uppercase tracking-widest opacity-60 font-semibold mt-4">
+            <div class="text-[10px] md:text-xs uppercase tracking-widest opacity-60 font-semibold mt-4">
                 Please enjoy and drink responsibly. Cheers!
             </div>
         </div>
@@ -1473,6 +1657,8 @@
             if (activeSlide) {
                 activeSlide.classList.remove('slide-hide');
                 activeSlide.classList.add('slide-show');
+                // Scroll container back to the top on slide change for small screen optimization
+                activeSlide.scrollTop = 0;
             }
 
             // Update bottom dock indicator
@@ -1534,7 +1720,7 @@
             }
         });
 
-        // Touch Swipe Alternatives for tablet screens
+        // Touch Swipe Alternatives for tablet/mobile screens
         let touchstartX = 0;
         let touchendX = 0;
 
